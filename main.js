@@ -1,0 +1,1 @@
+import senitors from "./assets/senitors.json"
