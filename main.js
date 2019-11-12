@@ -7,17 +7,31 @@ async function getAPIData(url) {
     console.error(error);
   }
 }
-
-let allSenators = [];
+let allSenators = []
+let simpleSenators = [];
 const theData = getAPIData("./assets/senators.json").then(data => {
   allSenators = data.results[0].members;
+  populateDOM(allSenators)
+  mapSenators(allSenators)
+  simpleSenators = mapSenators(allSenators)
 });
 
 const republicans = allSenators.filter(senator => senator.party === "R");
 const democrats = allSenators.filter(senator => senator.party === "D");
 const independents = allSenators.filter(senator => senator.party === "ID");
 
-console.log(republicans);
+//map example
+function mapSenators(allOfThem) {
+const simpleSenators = allSenators.map(senator => {
+  return {
+    name: `${senator.first_name} ${senator.last_name}`,
+    party: senator.party,
+    birth_date: senator.date_of_birth,
+    gender: senator.gender,
+  }
+})}
+
+console.log(simpleSenators);
 
 //Does simliar to getElementByID, but shorter, do a # for ID, . for class.
 const wrapper = document.querySelector(".container");
@@ -53,6 +67,13 @@ function populateCardContent(senator){
     let figure = document.createElement('figure')
     figure.setAttribute('class', 'image is-48x48')
     let figureImage = document.createElement('img')
+    if(senator.party === "R") {
+      figureImage.src = "/assets/Repub.jpg"
+    }
+    if(senator.party === "D") {
+      figureImage.src = "/assets/Democ.jpg"
+    }
+    titleP.textContent = `${senator.first_name} ${senator.last_name}`
     figureImage.src= "httpsL//pluma.io/images/placeholders/96x96.png" 
     figureImage.alt="Placeholder thumbnail"
     let mediaContent = document.createElement('div')
@@ -62,12 +83,26 @@ function populateCardContent(senator){
     let subtitleP = document.createElement('p')
     subtitleP.setAttribute('class', 'subtitle is-6')
 
+    let contentDiv = document.createElement('div')
+    contentDiv.setAttribute("class", "content")
+    contentDiv.textContent = `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+    Phasellus nec iaculis mauris.`
+    let contentBreak = document.createElement('hr')
+    let timeSection = document.createElement('time')
+    let newDate = new Date()
+    timeSection.dateTime = `${new Date}`
+    timeSection.textContent = `${new Date}`
+
+
     mediaContent.appendChild(titleP)
     mediaContent.appendChild(subtitleP)
     figure.appendChild(figureImage)
     mediaLeft.appendChild(figure)
     media.appendChild(mediaLeft)
     media.appendChild(mediaContent)
+    contentDiv.appendChild(contentBreak)
+    contentDiv.appendChild(timeSection)
     cardContent.appendChild(media)
+    cardContent.appendChild(contentDiv)
     return cardContent
 }
