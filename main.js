@@ -22,7 +22,7 @@ const independents = allSenators.filter(senator => senator.party === "ID");
 
 //map example
 function mapSenators(allOfThem) {
-const simpleSenators = allSenators.map(senator => {
+const resultMap = allSenators.map(senator => {
   return {
     name: `${senator.first_name} ${senator.last_name}`,
     party: senator.party,
@@ -32,6 +32,17 @@ const simpleSenators = allSenators.map(senator => {
 })}
 
 console.log(simpleSenators);
+
+
+//Reduce practice
+function getOldestSenator(arrayOfSenators) {
+  return arrayOfSenators.reduce((oldest, senator) => {
+    return (oldest.age || 0) > senator.age ? oldest : senator
+
+  }, {})
+}
+
+
 
 //Does simliar to getElementByID, but shorter, do a # for ID, . for class.
 const wrapper = document.querySelector(".container");
